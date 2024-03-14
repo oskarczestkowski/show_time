@@ -16,7 +16,7 @@ export default async function Index() {
       return false;
     }
   };
-
+  
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
