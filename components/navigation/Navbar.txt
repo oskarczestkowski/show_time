@@ -1,0 +1,102 @@
+"use client"
+import {MinorLogo} from "../Logo"
+import { createClient } from "@/utils/supabase/server";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+
+interface NavBarProps {
+    isAuthUser: boolean;
+  }
+  
+ export  const NavBar: React.FC<NavBarProps> = ({ isAuthUser }) => {
+
+    const canInitSupabaseClient = () => {
+        // This function is just for the interactive tutorial.
+        // Feel free to remove it once you have Supabase connected.
+        try {
+          createClient();
+          return true;
+        } catch (e) {
+          return false;
+        }
+      };
+      
+      const isSupabaseConnected = canInitSupabaseClient();
+
+
+
+
+
+
+
+
+      const router = useRouter()
+  const path = usePathname()
+  const [toggleBgNav, setToggleBgNav] = useState(true);
+  const [toggleSidebar, setToggleSidebar] = useState(false)
+  const [markTop, setMarkTop] = useState(-1)
+  const [mark, setMark] = useState<HTMLElement | null>(null)
+
+  const [scrollTop, setScrollTop] = useState(0)
+
+  useLayoutEffect(() => {
+    const element = document.getElementById('markRenderBgNav');
+    const elementTop = (element?.getBoundingClientRect().top ?? 0)
+    setMarkTop(elementTop ?? -1)
+    setMark(element)
+  }, []);
+
+
+  useEffect(() => {
+
+    router.refresh()
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setScrollTop(scrollTop)
+      setToggleBgNav(false)
+
+      if (scrollTop >= markTop) {
+        setToggleBgNav(false)
+      }
+      if (scrollTop < markTop) {
+        setToggleBgNav(true)
+      }
+    }
+
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [markTop, path]);
+
+
+
+
+  const scrollToElementById = (mark: HTMLElement | null): any => {
+    if (mark !== null) {
+      mark.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      router.replace("/#contact")
+      router.refresh()
+    }
+  }
+
+    return(
+        <nav className={` 
+        ${path === "/" && toggleBgNav || toggleSidebar || markTop === 0 
+        ? "bg-opacity-0"
+         : "bg-opacity-65 backdrop-blur-2xl"}
+         px-2 w-full bg-slate-900 items-center m-auto flex justify-between border-b fixed top-0 mb-12`}>
+           <div className="z-50">
+           <MinorLogo />
+           </div>
+        <div className=" p-3 text-sm">
+          {/* {isSupabaseConnected && <AuthButton isAuthUser={isAuthUser}/>} */}
+        </div>
+      </nav>
+    )
+}
