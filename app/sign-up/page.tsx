@@ -55,7 +55,7 @@ export default function Login({
 
   return (
     <main className="main my-4 sm:my-24 animate-in">
-      <p className="text-2xl">You are...</p>
+      <p className="text-2xl text-amber-200">You are an...</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 justify-be items-center gap-8 text-center">
         <Link
           href="/sign-up/artist"

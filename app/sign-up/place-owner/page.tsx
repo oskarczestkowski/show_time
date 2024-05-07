@@ -56,45 +56,45 @@ export default function Login({
   return (
     <main className="flex-1 my-4 flex m-auto flex-col items-center w-full px-8 sm:max-w-md justify-center gap-2">
     
-      <div className="flex text-2xl justify-start m-auto pl-4 gap-1">
+      <div className="flex text-2xl justify-start m-auto pl-4 gap-1 text-amber-200">
              Place Owner  <MdOutlinePlace size={20} />
       </div>
       <form
         className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
       gap-2 text-foreground border-2 border-yellow-600"
       >
-        <label className="text-md" htmlFor="email">
+        <label className="text-md text-amber-200" htmlFor="email">
           First Name
         </label>
         <input
-          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-amber-200"
+          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-gray-300"
           name="firstName"
           placeholder="Your first name"
           required
         />
-         <label className="text-md" htmlFor="email">
+         <label className="text-md text-amber-200" htmlFor="email">
           Last Name
         </label>
           <input
-          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-amber-200"
+          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-gray-300"
           name="lastName"
           placeholder="Your last name"
           required
         />
-        <label className="text-md" htmlFor="email">
+        <label className="text-md text-amber-200" htmlFor="email">
           Email
         </label>
         <input
-          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-amber-200"
+          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-gray-300"
           name="email"
           placeholder="your@email.com"
           required
         />
-        <label className="text-md" htmlFor="password">
+        <label className="text-md text-amber-200" htmlFor="password">
           Password
         </label>
         <input
-          className="px-4 py-2 bg-inherit border  border-yellow-600 mb-6 placeholder:text-amber-200"
+          className="px-4 py-2 bg-inherit border  border-yellow-600 mb-6 placeholder:text-gray-300"
           type="password"
           name="password"
           placeholder="••••••••"
@@ -102,7 +102,7 @@ export default function Login({
         />
         <SubmitButton
           formAction={signUp}
-          className="text-yellow-600 animate-btn-primary px-4 py-2 text-foreground mb-2 font-bold text-xl"
+          className="sm:text-amber-200 animate-btn-primary sm:border-amber-200 px-4 py-2 text-foreground mb-2 font-bold text-xl"
           pendingText="Signing Up..."
         >
           Sign Up

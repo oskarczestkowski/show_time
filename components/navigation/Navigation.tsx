@@ -26,5 +26,6 @@ export default async function Navigation (){
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>
+      
     )
 }

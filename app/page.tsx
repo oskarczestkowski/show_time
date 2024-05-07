@@ -1,11 +1,12 @@
 import DeployButton from "../components/DeployButton";
-import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
+import { createClient } from "@/utils/supabase/server"
 import Header from "@/components/Header";
 import JoinUsButton from "@/components/JoinUsButton";
 import Navigation from "@/components/navigation/Navigation";
-import { MajorrLogo, MinorLogo } from "@/components/Logo";
+import { MajorLogo, MinorLogo } from "@/components/Logo";
+import { SignInButton } from "@/components/SignUpTile";
+import { db } from "@/utils/drizzle";
+import { artists } from "@/schema";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
@@ -20,17 +21,15 @@ export default async function Index() {
   };
   
   const isSupabaseConnected = canInitSupabaseClient();
-
+  const allUsers = await db.select().from(artists);
+  console.log(allUsers)
   return (
-    <main className="main">
+    <main className="main mt-32">
       
-      <MajorrLogo/>
-
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-      
-          {isSupabaseConnected ? <JoinUsButton/> : <ConnectSupabaseSteps />}
-       
-      </div>
+      <MajorLogo/>
+      <JoinUsButton/> 
+      <p className="text-xl text-amber-200"> OR </p>
+      <SignInButton />
 
     </main>
   );
