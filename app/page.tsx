@@ -21,11 +21,7 @@ export default async function Index() {
   const supabase = createClient();
 
   const isSupabaseConnected = canInitSupabaseClient();
-  const { data, error } = await supabase
-  .rpc('get_genres')
 
- 
-  console.log(data)
   return (
     <main className="main mt-32">
       
