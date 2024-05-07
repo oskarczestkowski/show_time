@@ -17,7 +17,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
+
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="text-foreground">

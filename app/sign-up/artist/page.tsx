@@ -4,8 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "@/app/login/submit-button";
 import { FiMusic } from "react-icons/fi";
-import { db } from "@/utils/drizzle";
-import { artists } from "@/schema";
+
 
 export default async function Login({
   searchParams,
@@ -34,16 +33,7 @@ export default async function Login({
         emailRedirectTo: `${origin}/auth/callback`,
       },
     });
-
-    await supabase.from('artists').insert({
-      user_uuid: a.user?.id,
-      artist_name: "",
-      name,
-      surname,
-      genre: "",
-    
-    })
-  
+   
     if (error) {
       return redirect("/login?message=Could not authenticate user");
     }

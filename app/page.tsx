@@ -5,8 +5,7 @@ import JoinUsButton from "@/components/JoinUsButton";
 import Navigation from "@/components/navigation/Navigation";
 import { MajorLogo, MinorLogo } from "@/components/Logo";
 import { SignInButton } from "@/components/SignUpTile";
-import { db } from "@/utils/drizzle";
-import { artists } from "@/schema";
+
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
@@ -19,10 +18,14 @@ export default async function Index() {
       return false;
     }
   };
-  
+  const supabase = createClient();
+
   const isSupabaseConnected = canInitSupabaseClient();
-  const allUsers = await db.select().from(artists);
-  console.log(allUsers)
+  const { data, error } = await supabase
+  .rpc('get_genres')
+
+ 
+  console.log(data)
   return (
     <main className="main mt-32">
       
