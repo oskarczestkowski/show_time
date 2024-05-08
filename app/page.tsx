@@ -27,7 +27,7 @@ export default async function Index() {
       
       <MajorLogo/>
       <JoinUsButton/> 
-      <p className="text-xl text-amber-200"> OR </p>
+      <p className="text-xl text-yellow-600"> Or... </p>
       <SignInButton />
 
     </main>

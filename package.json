@@ -6,12 +6,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "@uploadthing/react": "^6.5.1",
     "autoprefixer": "10.4.17",
     "dotenv": "^16.4.5",
+    "framer-motion": "^11.1.9",
     "geist": "^1.2.1",
+    "google-map-react": "^2.2.1",
     "next": "latest",
     "postcss": "8.4.33",
     "postgres": "^3.4.4",
@@ -25,6 +28,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/google-map-react": "^2.1.10",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",

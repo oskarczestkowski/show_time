@@ -6,29 +6,12 @@ import { SubmitButton } from "@/app/login/submit-button";
 import { FiMusic } from "react-icons/fi";
 import { MdOutlinePlace } from "react-icons/md";
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  const signIn = async (formData: FormData) => {
-    "use server";
-
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
-    }
-
-    return redirect("/protected");
-  };
+  const supabase = createClient();
 
   const signUp = async (formData: FormData) => {
     "use server";
@@ -36,56 +19,47 @@ export default function Login({
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    // artists
+    const name = formData.get("name") as string;
+    const surname = formData.get("surname") as string;
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error: errSignUp } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${origin}/auth/callback`,
       },
     });
-
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
+    console.log(errSignUp);
+    if (data) {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      console.log(data);
+    }
+    if (errSignUp) {
+      return redirect("/");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    return redirect("/sign-up/place-owner/details");
   };
 
   return (
     <main className="flex-1 my-4 flex m-auto flex-col items-center w-full px-8 sm:max-w-md justify-center gap-2">
-    
       <div className="flex text-2xl justify-start m-auto pl-4 gap-1 text-amber-200">
-             Place Owner  <MdOutlinePlace size={20} />
+        Create Place Owner Account <MdOutlinePlace size={20} />
       </div>
       <form
         className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
       gap-2 text-foreground border-2 border-yellow-600"
       >
         <label className="text-md text-amber-200" htmlFor="email">
-          First Name
-        </label>
-        <input
-          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-gray-300"
-          name="firstName"
-          placeholder="Your first name"
-          required
-        />
-         <label className="text-md text-amber-200" htmlFor="email">
-          Last Name
-        </label>
-          <input
-          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-gray-300"
-          name="lastName"
-          placeholder="Your last name"
-          required
-        />
-        <label className="text-md text-amber-200" htmlFor="email">
           Email
         </label>
         <input
-          className="px-4 py-2 bg-inherit border border-yellow-600 mb-6 placeholder:text-gray-300"
+          className="px-2 py-1 bg-inherit border border-yellow-600  placeholder:text-gray-300"
           name="email"
           placeholder="your@email.com"
           required
@@ -94,21 +68,22 @@ export default function Login({
           Password
         </label>
         <input
-          className="px-4 py-2 bg-inherit border  border-yellow-600 mb-6 placeholder:text-gray-300"
+          className="px-2 py-1 bg-inherit border  border-yellow-600  placeholder:text-gray-300"
           type="password"
           name="password"
           placeholder="••••••••"
           required
         />
+
         <SubmitButton
           formAction={signUp}
-          className="sm:text-amber-200 animate-btn-primary sm:border-amber-200 px-4 py-2 text-foreground mb-2 font-bold text-xl"
+          className="animate-btn-primary my-4 sm:text-amber-200 border-amber-200 px-2 py-1 text-foreground mb-2 font-bold text-xl"
           pendingText="Signing Up..."
         >
-          Sign Up
+          Next Step
         </SubmitButton>
         {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center ">
             {searchParams.message}
           </p>
         )}

@@ -1,4 +1,4 @@
-import {Roboto, Roboto_Condensed} from "next/font/google"
+import {Roboto_Condensed} from "next/font/google"
 import Link from "next/link";
 export const robotoCondensed = Roboto_Condensed({
     weight:"700",

@@ -53,8 +53,8 @@ body{
     hover:cursor-pointer
   }
   .animate-btn-secondary{
-    @apply text-white
-    border-white 
+    @apply text-amber-200
+    border-amber-200 
     border font-semibold
     hover:bg-white
     hover:text-black
@@ -82,3 +82,4 @@ body{
     transform: translateY(0);
   }
 }
+

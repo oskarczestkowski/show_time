@@ -5,6 +5,8 @@ import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 import Navigation from "@/components/navigation/Navigation";
+import Map from "./map";
+import { Aside } from "./aside";
 
 export default async function ProtectedPage() {
   const supabase = createClient();
@@ -13,21 +15,18 @@ export default async function ProtectedPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  let { data, error } = await supabase
-  .from('artists')
-  .select('*')
-
-  console.log("dataa", data);
-  console.log(error);
-  console.log("user: ", user);
   if (!user) {
-    return redirect("/login");
+    // return redirect("/login");
   }
 
   return (
-   <>
-    <Navigation />
-    <div className="flex-1 w-full flex flex-col gap-20 items-center"></div>
-   </>
+    <div className="h-screen">
+      <Navigation />
+      <div className="flex-1 w-full flex flex-col gap-20 items-center"></div>
+      <div className="flex h-full pt-12">
+        <Map />
+        <Aside />
+      </div>
+    </div>
   );
 }
