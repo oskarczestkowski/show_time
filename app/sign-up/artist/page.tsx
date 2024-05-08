@@ -29,20 +29,25 @@ export default async function Login({
     const surname = formData.get("surname") as string
     const supabase = createClient();
     
-    const { data:genres, error:errGenres } = await supabase
-    .rpc('get_genres')
 
 
-    const { data:a, error } = await supabase.auth.signUp({
+    const { data, error:errSignUp } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${origin}/auth/callback`,
       },
     });
-   
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
+    console.log(errSignUp)
+    if(data){
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      console.log(data)
+    }
+    if (errSignUp) {
+      return redirect("/");
     }
 
     
@@ -59,16 +64,6 @@ export default async function Login({
         className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
       gap-2 text-foreground border-2 border-yellow-600"
       >
-        
-        <label className="text-md text-amber-200" htmlFor="email">
-         Artist Name
-        </label>
-        <input
-          className="px-2 py-1 bg-inherit border border-yellow-600  placeholder:text-gray-300"
-          name="name"
-          placeholder="Artist name"
-          required
-        />
         <label className="text-md text-amber-200" htmlFor="email">
           Email
         </label>
