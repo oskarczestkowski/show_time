@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import GoogleMapReact from "google-map-react";
+import { FaInstagram } from "react-icons/fa";
 
 const AnyReactComponent = ({ text, lat, lng }: any) => (
   <div className="text-4xl">{text}</div>
@@ -21,12 +22,9 @@ export default function SimpleMap() {
         bootstrapURLKeys={{ key: "AIzaSyCbtcMBOOAOYoBlZUzWC-3xwtsEPKbbs3s" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
+        yesIWantToUseGoogleMapApiInternals
+
       >
-        <AnyReactComponent
-          lat={defaultProps.center.lat}
-          lng={defaultProps.center.lng}
-          text="🏠"
-        />
       </GoogleMapReact>
     </div>
   );

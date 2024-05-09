@@ -1,28 +1,35 @@
 "use client";
 import { createAnArtist } from "@/app/next_actions/artist";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { UploadButton } from "@/utils/uploadthing";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const Form = ({ genres }: { genres: string[] }) => {
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
-  
+  const [imgUrl, setImgUrl] = useState<string>("");
+  const router = useRouter()
   return (
     <form
       action={async (formData) => {
-        if (!imgUrl || imgUrl === "") {
+        if (imgUrl === "") {
+          alert("You must upload a photo!")
           return;
         }
-        console.log(imgUrl)
+
         const { error, success } = await createAnArtist(formData, imgUrl);
-        if (success || error) {
-          console.log(success);
+        if (success) {
+          router.push("/dashboard")
+        }
+        if (error) {
+          alert(error)
         }
       }}
       className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
         gap-2 text-foreground border-2 border-yellow-600"
     >
-          <label className="text-md text-amber-200" htmlFor="email">
+
+      <label className="text-md text-amber-200" htmlFor="email">
         Upload your photo
       </label>
       <UploadButton
@@ -70,7 +77,7 @@ export const Form = ({ genres }: { genres: string[] }) => {
       </select>
       <button
         type="submit"
-      
+
         className="animate-btn-primary my-4 sm:text-amber-200 border-amber-200
              px-2 py-1 text-foreground mb-2 font-bold text-xl"
       >

@@ -24,24 +24,31 @@ export default async function Login({
     const surname = formData.get("surname") as string;
     const supabase = createClient();
 
-    const { data, error: errSignUp } = await supabase.auth.signUp({
+    // const { data, error: errSignUp } = await supabase.auth.signUp({
+    //   email,
+    //   password,
+    //   options: {
+    //     emailRedirectTo: `${origin}/auth/callback`,
+    //   },
+    // });
+    // console.log(errSignUp);
+    // if (data) {
+    //   const { data, error } = await supabase.auth.signInWithPassword({
+    //     email,
+    //     password,
+    //   });
+    //   const {data} = await supabase.auth.getUser()
+    //   console.log(data.user?.id);
+    // }
+    // if (errSignUp) {
+    //   return redirect("/");
+    // }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
     });
-    console.log(errSignUp);
-    if (data) {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      console.log(data);
-    }
-    if (errSignUp) {
-      return redirect("/");
-    }
+    console.log(data.user);
 
     return redirect("/sign-up/place-owner/details");
   };

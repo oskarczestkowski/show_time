@@ -31,27 +31,24 @@ export default async function Login({
     
 
 
-    const { data, error:errSignUp } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
-    });
-    console.log(errSignUp)
-    if(data){
+    // const { data, error:errSignUp } = await supabase.auth.signUp({
+    //   email,
+    //   password,
+    //   options: {
+    //     emailRedirectTo: `${origin}/auth/callback`,
+    //   },
+    // });
+    // console.log(errSignUp)
+    if(true){
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      console.log(data)
-    }
-    if (errSignUp) {
-      return redirect("/");
-    }
+      console.log(data.user?.id)
+      return redirect("/sign-up/artist/details");
 
-    
-    return redirect("/sign-up/artist/details");
+    }
+    return redirect("/");
   };
   
   return (
@@ -59,7 +56,7 @@ export default async function Login({
       <div className="flex text-2xl justify-start m-auto pl-4 gap-2 text-amber-200">
              Create Artist Account  <FiMusic size={16} />
       </div>
-  
+
       <form
         className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
       gap-2 text-foreground border-2 border-yellow-600"

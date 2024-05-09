@@ -61,6 +61,11 @@ body{
     duration-500
     hover:cursor-pointer
   }
+  .animate-btn-aside{
+    @apply hover:bg-yellow-600
+    hover:text-black
+    hover:cursor-pointer
+  }
   .main{
     @apply flex-1
      w-full flex flex-col

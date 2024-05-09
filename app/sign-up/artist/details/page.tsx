@@ -25,7 +25,6 @@ export default async function ProtectedPage({
              Artist Details <FiMusic size={16} />
       </div>
       <Form genres={genres}/>
-  
     </main>
   );
 }
