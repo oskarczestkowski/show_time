@@ -6,9 +6,10 @@ import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export const Form = ({ genres }: { genres: string[] }) => {
+export const Form = () => {
   const [imgUrl, setImgUrl] = useState<string>("");
   const router = useRouter()
+  const genres = ["rap, rock, hip-hop"]
   return (
     <form
       action={async (formData) => {
