@@ -35,7 +35,7 @@ export default async function Login({
   return (
     <main className="flex-1 my-4 flex m-auto flex-col items-center w-full px-8 sm:max-w-md justify-center gap-2">
       <div className="flex text-2xl justify-start m-auto pl-4 gap-1 text-amber-200">
-        Login the app
+        Sign In
       </div>
       <form
         className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
