@@ -1,7 +1,5 @@
 "use client";
 
-import { AppUser, Artist } from "@/types/database.types";
-import { createClient } from "@/utils/supabase/client";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -20,7 +18,7 @@ import dynamic from 'next/dynamic'
  
 const CalendarElement = dynamic(() => import('./CalendarElement'), { ssr: false })
 
-export const AsideRight = ({ appUser }: { appUser: AppUser }) => {
+export const AsideRight = ({ appUser }: { appUser: User }) => {
   const [isRender, setIsRender] = useState(true);
   const mainControls = useAnimation();
 
@@ -47,7 +45,7 @@ export const AsideRight = ({ appUser }: { appUser: AppUser }) => {
           duration: 0.5,
           delay: 0,
         }}
-        className={`flex fixed  h-screen top-12 pt-2 right-0 z-40 
+        className={`flex fixed  h-screen top-12 pt-2 right-0 z-40 max-w-xl
        `}
       >
         <div className="relative h-full">
@@ -56,9 +54,9 @@ export const AsideRight = ({ appUser }: { appUser: AppUser }) => {
               }`}
           >
             <p className="font-bold">
-              {appUser.type.toUpperCase()}
+              {appUser.role}
             </p>
-            <Image src={appUser.user.image_url as string}
+            <Image src={appUser.avatar as string}
               alt="Your photo" width={400} height={400}
               className="h-32 w-32 rounded-sm border-4 border-yellow-600" />
             {/* {appUser.type == "artist" ? <p> {appUser.user.artist_name}</p>
@@ -120,7 +118,7 @@ export const AsideLeft = () => {
           duration: 0.5,
           delay: 0,
         }}
-        className={`flex fixed h-screen top-12 pt-2 left-0 z-40 
+        className={`flex fixed h-screen top-12 pt-2 left-0 z-40 max-w-xl
          `}
       >
         <div className="relative h-full">

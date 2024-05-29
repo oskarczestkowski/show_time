@@ -18,13 +18,7 @@ export const Form = () => {
           return;
         }
 
-        const { error, success } = await createAnArtist(formData, imgUrl);
-        if (success) {
-          router.push("/dashboard")
-        }
-        if (error) {
-          alert(error)
-        }
+
       }}
       className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
         gap-2 text-foreground border-2 border-yellow-600"

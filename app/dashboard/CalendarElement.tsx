@@ -14,10 +14,12 @@ export default function CalendarElement() {
     
 
   const [value, onChange] = useState<Value>(new Date());
-
+  const onChangeCalendar = (e:any)=>{
+    console.log(e)
+  }
   return (
     <div className='bg-200'>
-      <Calendar onChange={onChange} value={value} className={"bg-slate-600"}/>
+      <Calendar onChange={onChangeCalendar} value={value} className={"bg-slate-600"}/>
     </div>
   );
 }

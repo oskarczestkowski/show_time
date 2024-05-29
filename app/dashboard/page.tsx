@@ -7,40 +7,26 @@ import { redirect } from "next/navigation";
 import Navigation from "@/components/navigation/Navigation";
 import { Map } from "./Map";
 import { AsideLeft, AsideRight } from "./Asides";
-import { AppUser, Artist, Organiser } from "@/types/database.types";
+import PocketBase from 'pocketbase';
+import { Events } from "./Events";
 
 export default async function ProtectedPage() {
-  const supabase = createClient();
+  const pb = new PocketBase('http://127.0.0.1:8090');
+//   const authData = await pb.collection('users').authRefresh();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    // return redirect("/login");
-  }
-
-  const { data: artist, error: errorArtists } = await supabase
-    .from('artists')
-    .select().eq("user_id", "")
-  const { data: organiser, error: errorOrganiser } = await supabase
-    .from('organisers')
-    .select().eq("user_id", "53c88a5b-a29d-4dc9-87dc-06eba7001c10")
-  if (errorArtists && errorOrganiser ){
-    return
-  }
-
-  const appUser:AppUser = {
-    type: errorArtists ? "organiser" : "artist",
-    user:  errorArtists ? organiser![0] as Artist: artist![0] as Organiser ,
-  }
-
+//   const appUser = await pb.collection('users').getOne(authData.record.id
+// ) as User;
+const user = await pb.collection('users').getFullList({
+  sort: '-created',
+}) as Array<User>;
   return (
     <div className="h-screen">
       <Navigation />
-      <div className="flex h-full pt-12">
-        <Map />
+      <div className="flex h-full pt-12 justify-center">
+        {/* <Map /> */}
+        <Events />
         <AsideLeft />
-        <AsideRight appUser={appUser} />
+        <AsideRight appUser={user[0]} />
       </div>
     </div>
   );

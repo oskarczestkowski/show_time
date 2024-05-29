@@ -5,54 +5,41 @@ import { redirect } from "next/navigation";
 import { SubmitButton } from "@/app/login/submit-button";
 import { FiMusic } from "react-icons/fi";
 import { MdOutlinePlace } from "react-icons/md";
+import PocketBase from 'pocketbase';
 
-export default async function Login({
+export default async function page({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  const supabase = createClient();
 
-  const signUp = async (formData: FormData) => {
+   const signUp = async (formData: FormData) => {
     "use server";
-
-    const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    // artists
-    const name = formData.get("name") as string;
-    const surname = formData.get("surname") as string;
-    const supabase = createClient();
 
-    // const { data, error: errSignUp } = await supabase.auth.signUp({
-    //   email,
-    //   password,
-    //   options: {
-    //     emailRedirectTo: `${origin}/auth/callback`,
-    //   },
-    // });
-    // console.log(errSignUp);
-    // if (data) {
-    //   const { data, error } = await supabase.auth.signInWithPassword({
-    //     email,
-    //     password,
-    //   });
-    //   const {data} = await supabase.auth.getUser()
-    //   console.log(data.user?.id);
-    // }
-    // if (errSignUp) {
-    //   return redirect("/");
-    // }
+    const pb = new PocketBase('http://127.0.0.1:8090');
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    console.log(data.user);
+    const data = {
+      "email": email,
+      "password": password,
+      "passwordConfirm": password,
+      "role": "organizer"
+    };
 
+    try {
+      const record = await pb.collection('users').create(data);
+      const authData = await pb.collection('users').authWithPassword(
+        email,
+        password,
+      );
+      
+    } catch (error) {
+      console.log(error)
+    }
     return redirect("/sign-up/place-owner/details");
-  };
 
+  }
   return (
     <main className="flex-1 my-4 flex m-auto flex-col items-center w-full px-8 sm:max-w-md justify-center gap-2">
       <div className="flex text-2xl justify-start m-auto pl-4 gap-1 text-amber-200">

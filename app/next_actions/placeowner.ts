@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { randomUUID } from "crypto";
 
-export const createAPlaceOwner = async (form: FormData, imgUrl: string) => {
+export const createAPlaceOwner = async (form: FormData, imgUrl: string | any) => {
   console.log("hello from action", form);
   const supabase = createClient();
 

@@ -10,11 +10,6 @@ export default async function ProtectedPage({
 }: {
   searchParams: { message: string };
 }) {
-  const supabase = createClient();
-  const {data:user} = await supabase.auth.getUser()
-    if(!user){
-        redirect("/")
-    }
 
   return (
     <main className="flex-1 my-4 flex m-auto flex-col items-center w-full px-8 sm:max-w-md justify-center gap-2">

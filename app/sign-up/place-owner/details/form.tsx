@@ -11,11 +11,7 @@ export const Form = () => {
   return (
     <form
       action={async (formData) => {
-        if (!imgUrl || imgUrl === "") {
-          return;
-        }
-        console.log(imgUrl)
-        const { error, success } = await createAPlaceOwner(formData, imgUrl);
+        const { error, success } = await createAPlaceOwner(formData, imgUrl) ;
         if (success || error) {
           console.log(success);
         }
