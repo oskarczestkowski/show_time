@@ -63,7 +63,7 @@ export default function ArtistForm() {
 
       const data = await response.json();
       console.log(data);
-      router.push('/dashboard');
+      router.push('/dashboard/artist');
     } catch (err) {
       setError('Failed to submit artist details');
     }

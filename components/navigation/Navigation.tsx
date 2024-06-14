@@ -1,7 +1,7 @@
 
 import { MinorLogo } from "../Logo"
 
-export default async function Navigation() {
+export default function Navigation() {
 
   return (
     <nav className="px-2 w-full bg-gray-800 items-center

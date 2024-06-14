@@ -1,31 +1,51 @@
-'use client';
-import { ReactNode, createContext, useContext, useState, useEffect } from 'react';
+// contexts/UserContext.tsx
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import db from '../db';
+import { User } from '@/.next/types/types'; // Adjust the import path as necessary
 
 interface UserContextType {
-  user: any;
+  user: User | null;
   fetchUser: () => Promise<void>;
-  setUser: (user: any) => void;
+  setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUserState] = useState<User | null>(null);
 
   const fetchUser = async () => {
     try {
       const authToken = localStorage.getItem('pb_auth');
       if (!authToken) {
-        setUser(null);
+        setUserState(null);
         return;
       }
+      
       const userModel = await db.getUser(authToken);
-      setUser(userModel);
+      if (!userModel) {
+        setUserState(null);
+        return;
+      }
+      
+      const user: User = {
+        id: userModel.id,
+        email: userModel.email,
+        role: userModel.role,
+        avatar: userModel.avatar || null,
+      };
+
+      setUserState(user);
     } catch (error) {
       console.error('Failed to fetch user:', error);
-      setUser(null);
+      setUserState(null);
     }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('pb_auth');
+    setUserState(null);
   };
 
   useEffect(() => {
@@ -33,7 +53,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, fetchUser, setUser }}>
+    <UserContext.Provider value={{ user, fetchUser, setUser: setUserState, logout }}>
       {children}
     </UserContext.Provider>
   );
@@ -41,7 +61,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 export function useUser() {
   const context = useContext(UserContext);
-  if (context === null) {
+  if (!context) {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;

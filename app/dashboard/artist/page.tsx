@@ -80,10 +80,10 @@ export default function ProtectedPage() {
     <div className="h-screen">
       <Navigation />
       <div className="flex h-full pt-12 justify-center">
-        {/* <Map />
+        <Map />
         <Events />
         <AsideLeft />
-        <AsideRight appUser={user} /> */}
+        <AsideRight appUser={user} />
       </div>
     </div>
   );
