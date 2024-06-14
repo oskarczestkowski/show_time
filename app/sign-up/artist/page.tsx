@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import SignUpPage  from "../components/SignUpPage"// Zmodyfikuj ścieżkę w zależności od struktury plików
-import  Details  from "./Details"; // Zmodyfikuj ścieżkę w zależności od struktury plików
+import  Details  from "./details/page"; // Zmodyfikuj ścieżkę w zależności od struktury plików
 
 export default function Page() {
     //const [isRegisterFinished, setIsRegisterFinished] = useState(false);

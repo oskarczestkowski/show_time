@@ -2,19 +2,14 @@
 import { useState } from "react";
 import { UploadButton } from "@/utils/uploadthing";
 
-function Form() {
+export default function Form() {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
 
   return (
     <form
       action={async (formData) => {
-        // Implement logic to handle form submission
         const fullName = formData.get("fullName") as string;
-
-        // Example of logging the form data
         console.log("Form Data:", { fullName, imgUrl });
-        
-        // You can call your server-side function to handle this data
       }}
       className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
         gap-2 text-foreground border-2 border-yellow-600"
@@ -50,5 +45,4 @@ function Form() {
       </button>
     </form>
   );
-};
-export default Form
+}

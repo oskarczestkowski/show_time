@@ -23,21 +23,6 @@ export default function MapElement() {
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
-        <AnyReactComponent
-        lat={54.373905264586014}
-        lng={18.647007740230656}
-          text="🏠"
-        />
-           <AnyReactComponent
-        lat={54.373905264586016}
-        lng={18.647007740230680}
-          text="🏠"
-        />
-           <AnyReactComponent
-        lat={54.373905264586014}
-        lng={18.647007740230656}
-          text="🏠"
-        />
       </GoogleMapReact>
     </div>
   );

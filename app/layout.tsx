@@ -1,27 +1,19 @@
-import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-import { MinorLogo } from "@/components/Logo";
+'use client';
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+import './globals.css'
+import { UserProvider } from './contexts/UserContext';
+import { ReactNode } from 'react';
 
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Show Time",
-  description: "Show us our talent!",
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="text-foreground h-screen">
-        {children}
+    <html lang="en">
+      <head>
+        <title>Showtime</title>
+      </head>
+      <body>
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

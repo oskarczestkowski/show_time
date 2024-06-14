@@ -12,7 +12,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { MdEvent, MdEventAvailable } from "react-icons/md";
-import SocialMediaForm from "./EditForm";
+//import SocialMediaForm from "./EditForm";
 import Calendar from 'react-calendar';
 import dynamic from 'next/dynamic'
  
@@ -56,12 +56,12 @@ export const AsideRight = ({ appUser }: { appUser: User }) => {
             <p className="font-bold">
               {appUser.role}
             </p>
-            <Image src={appUser.avatar as string}
+            <Image src={appUser.avatar as string || ''}
               alt="Your photo" width={400} height={400}
               className="h-32 w-32 rounded-sm border-4 border-yellow-600" />
             {/* {appUser.type == "artist" ? <p> {appUser.user.artist_name}</p>
               : null} */}
-            <SocialMediaForm appUser={appUser} />
+            
 
           </div>
         </div>
