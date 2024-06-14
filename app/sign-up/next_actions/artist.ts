@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
 import { randomUUID } from "crypto";
 import PocketBase from "pocketbase";
 

@@ -1,19 +1,30 @@
-import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import PocketBase from 'pocketbase';
 
 export async function GET(request: Request) {
-  // The `/auth/callback` route is required for the server-side auth flow implemented
-  // by the SSR package. It exchanges an auth code for the user's session.
-  // https://supabase.com/docs/guides/auth/server-side/nextjs
-  const requestUrl = new URL(request.url);
-  const code = requestUrl.searchParams.get("code");
-  const origin = requestUrl.origin;
+    const requestUrl = new URL(request.url);
+    const email = requestUrl.searchParams.get("email");
+    const password = requestUrl.searchParams.get("password");
+    const origin = requestUrl.origin;
 
-  if (code) {
-    const supabase = createClient();
-    await supabase.auth.exchangeCodeForSession(code);
-  }
+    if (email && password) {
+        const pb = new PocketBase('http://127.0.0.1:8090');
+        try {
+            // Autoryzacja użytkownika za pomocą emaila i hasła
+            const authData = await pb.collection('users').authWithPassword(email, password);
 
-  // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+            if (authData) {
+                console.log('Authenticated with PocketBase:', authData);
+                // Możesz ustawić sesję użytkownika tutaj, jeśli jest to wymagane
+                // np. ustawienie ciasteczka sesji
+            } else {
+                console.log('Authentication failed');
+            }
+        } catch (error) {
+            console.error('Error during authentication:', error);
+        }
+    }
+
+    // URL do przekierowania po zakończeniu procesu autoryzacji
+    return NextResponse.redirect(`${origin}/protected`);
 }

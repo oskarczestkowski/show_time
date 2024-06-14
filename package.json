@@ -16,7 +16,7 @@
     "geist": "^1.2.1",
     "google-map-react": "^2.2.1",
     "next": "latest",
-    "pocketbase": "^0.21.2",
+    "pocketbase": "^0.21.3",
     "postcss": "8.4.33",
     "postgres": "^3.4.4",
     "react": "18.2.0",

@@ -1,21 +1,18 @@
 import Link from "next/link";
 import { FiMusic } from "react-icons/fi";
 import { MdOutlinePlace } from "react-icons/md";
-import PocketBase from "pocketbase"
-import { redirect } from "next/navigation";
 
 export default function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-
   return (
     <main className="main my-4 sm:my-24 animate-in">
       <p className="text-2xl text-amber-200">You are an...</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 justify-be items-center gap-8 text-center">
         <Link
-          href="/sign-up/artist"
+          href="/sign-up/artist?role=artist"
           className="animate-btn-primary p-8
         flex flex-col gap-4
         text-base sm:text-xl 
@@ -26,11 +23,9 @@ export default function Login({
           <FiMusic size={72} />
           Artist
         </Link>
-        <p className="sm:hidden block">
-          Or
-        </p>
+        <p className="sm:hidden block">Or</p>
         <Link
-          href="/sign-up/place-owner"
+          href="/sign-up/place-owner?role=organizer"
           className="animate-btn-primary p-8 
           text-base sm:text-xl 
         flex flex-col gap-4
