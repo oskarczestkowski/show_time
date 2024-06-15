@@ -6,9 +6,9 @@ import Navigation from "@/components/navigation/Navigation";
 import { Map } from "../components/Map";
 import AsideLeft from '../components/AsideLeft';
 import AsideRight from '../components/AsideRight';
-import { Events } from "../components/Events";
+import { Events } from '../components/Events';
 import { useUser } from '@/app/contexts/UserContext';
-import { User } from '@/.next/types/types';
+import EventForm from '../components/addEventForm';
 
 export default function ProtectedPage() {
   const router = useRouter();
@@ -39,7 +39,8 @@ export default function ProtectedPage() {
 
         const data = await response.json();
         setUser(data.user);
-        console.log(data.user)
+        if (data.user) console.log('User found in context:', data.user);
+        else console.log('No user data found');
         setLoading(false);
       } catch (err) {
         if (err instanceof Error) {
@@ -86,6 +87,7 @@ export default function ProtectedPage() {
         <Events />
         <AsideLeft />
         <AsideRight appUser={user} />
+        <EventForm user={user} /> {/* Pass user object as a prop */}
       </div>
     </div>
   );

@@ -11,6 +11,7 @@
     "@supabase/supabase-js": "latest",
     "@uploadthing/react": "^6.5.1",
     "autoprefixer": "10.4.17",
+    "axios": "^1.7.2",
     "cookie": "^0.6.0",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.1.9",

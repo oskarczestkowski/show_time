@@ -1,6 +1,6 @@
 // components/UserAvatar.tsx
 import Image from "next/image";
-import { User } from "@/.next/types/types";
+import { User } from "@/types/types";
 
 const UserAvatar = ({ user }: { user: User }) => (
   <div className="flex flex-col items-center">

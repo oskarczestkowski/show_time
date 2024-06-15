@@ -1,11 +1,16 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import GoogleMapReact from 'google-map-react';
-import dynamic from 'next/dynamic'
- 
-const CalendarElement = dynamic(() => import('./CalendarElement'), { ssr: false })
+import { TbLetterS } from "react-icons/tb";
+import dynamic from 'next/dynamic';
 
-const AnyReactComponent = ({ text }: any) => <div className="text-4xl">{text}</div>;
+const CalendarElement = dynamic(() => import('./CalendarElement'), { ssr: false });
+
+const EventMarker = ({ text }: any) => (
+  <div className="text-4xl">
+    <TbLetterS />
+  </div>
+);
 
 export default function MapElement() {
   const defaultProps = {
@@ -16,13 +21,64 @@ export default function MapElement() {
     zoom: 14
   };
 
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/dashboard/getEvents', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || 'Failed to fetch events');
+        }
+
+        const data = await response.json();
+        setEvents(data);
+        setLoading(false);
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error('Error fetching events:', err.message);
+          setError(err.message);
+        } else {
+          console.error('Unexpected error:', err);
+          setError('An unexpected error occurred');
+        }
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="h-full w-full">
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyCbtcMBOOAOYoBlZUzWC-3xwtsEPKbbs3s" }}
+        bootstrapURLKeys={{ key: "AIzaSyD75EWmDGLt6lq4KlZmniElKohX5GSIXjA" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
+        {events.map(event => (
+          <EventMarker
+            key={event.id}
+            lat={event.latitude}
+            lng={event.longitude}
+            text={event.name}
+          />
+        ))}
       </GoogleMapReact>
     </div>
   );

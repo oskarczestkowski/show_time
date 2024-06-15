@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
         }
 
         const user = await db.client.collection("users").getOne(userId);
+        console.log(userId)
 
         return NextResponse.json({ user });
     } catch (err: any) {

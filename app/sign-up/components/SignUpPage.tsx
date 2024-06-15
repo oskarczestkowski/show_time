@@ -29,7 +29,8 @@ const SignUpPage = () => {
 
     try {
       const form = { email, password, role };
-      const response = await fetch('/api/artist/signup', {
+      const endpoint = role === 'artist' ? '/api/artist/signup' : '/api/placeowner/signup';
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)

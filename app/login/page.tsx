@@ -28,13 +28,14 @@ function Login() {
       }
 
       localStorage.setItem('pb_auth', data.token);
+      localStorage.setItem('user_id', data.user.id);  // Storing user_id for later use
       setUser(data.user);
 
       // Redirect based on user role
       if (data.user.role === 'artist') {
         router.push('/dashboard/artist');
       } else if (data.user.role === 'organizer') {
-        router.push('/dashboard/organizer');
+        router.push('/dashboard/placeowner');
       }
     } catch (err: any) {
       console.error('Login error:', err.message);
@@ -51,6 +52,7 @@ function Login() {
         className="animate-in p-4 flex-1 flex flex-col w-full justify-center 
         gap-2 text-foreground border-2 border-yellow-600"
         onSubmit={handleSubmit}
+        onChange={() => setError(null)}  // Clear error message on input change
       >
         <label className="text-md text-amber-200" htmlFor="email">
           Email

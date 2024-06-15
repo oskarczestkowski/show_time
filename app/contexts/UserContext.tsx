@@ -1,7 +1,7 @@
 // contexts/UserContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import db from '../db';
-import { User } from '@/.next/types/types'; // Adjust the import path as necessary
+import { User } from '@/types/types';// Adjust the import path as necessary
 
 interface UserContextType {
   user: User | null;

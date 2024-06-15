@@ -39,3 +39,8 @@ export async function POST(request: NextRequest) {
         );
     }
 }
+export const config = {
+    api: {
+        bodyParser: true, // Enable body parsing for JSON requests
+    },
+};
