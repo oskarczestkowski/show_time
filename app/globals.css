@@ -87,4 +87,9 @@ body{
     transform: translateY(0);
   }
 }
+.marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
 

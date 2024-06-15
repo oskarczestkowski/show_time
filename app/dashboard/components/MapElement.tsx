@@ -7,12 +7,12 @@ import dynamic from 'next/dynamic';
 const CalendarElement = dynamic(() => import('./CalendarElement'), { ssr: false });
 
 const EventMarker = ({ text }: any) => (
-  <div className="text-4xl">
-    <TbLetterS />
+  <div className="marker">
+    <TbLetterS size={30} />
   </div>
 );
 
-export default function MapElement() {
+const MapElement = () => {
   const defaultProps = {
     center: {
       lat: 54.373905264586014,
@@ -39,6 +39,7 @@ export default function MapElement() {
         }
 
         const data = await response.json();
+        console.log('Fetched events:', data); // Log fetched events
         setEvents(data);
         setLoading(false);
       } catch (err) {
@@ -79,7 +80,16 @@ export default function MapElement() {
             text={event.name}
           />
         ))}
+        {/* Hardcoded marker for testing */}
+        <EventMarker
+          key="hardcoded"
+          lat={54.373905264586014}
+          lng={18.647007740230656}
+          text="Test"
+        />
       </GoogleMapReact>
     </div>
   );
-}
+};
+
+export default MapElement;

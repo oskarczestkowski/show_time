@@ -5,7 +5,7 @@ import db from "@/app/db";
 export async function GET(request: NextRequest) {
     try {
         const events = await db.client.collection("event").getFullList({
-            sort: '-date', // Sort events by date, most recent first
+            
         });
         
         return NextResponse.json(events);
