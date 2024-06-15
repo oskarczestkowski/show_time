@@ -8,7 +8,7 @@ import AsideLeft from '../components/AsideLeft';
 import AsideRight from '../components/AsideRight';
 import { Events } from "../components/Events";
 import { useUser } from '@/app/contexts/UserContext';
-import { User } from '@/.next/types/types';
+import { User } from '@/types/types';
 
 export default function ProtectedPage() {
   const router = useRouter();
