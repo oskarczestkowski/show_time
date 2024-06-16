@@ -27,9 +27,9 @@ export interface Event {
 export interface Message {
   id: string;
   sender_id: string;
+  sender_email: string; // Add this line
   receiver_id: string;
   message: string;
   created: string;
 }
-
 

@@ -1,4 +1,4 @@
-// messageForm.tsx
+// components/MessageForm.tsx
 import React, { useState } from 'react';
 
 interface MessageFormProps {
