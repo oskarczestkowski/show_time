@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { UserRole } from '@/types/types';
+import { UserRole } from '@/types/types'; // Ensure this path is correct
 
-interface MessageFormProps {
+interface SendMessageBoxProps {
   receiverId: string;
   senderRole: UserRole;
   onMessageSent: () => void;
 }
 
-const MessageForm: React.FC<MessageFormProps> = ({ receiverId, senderRole, onMessageSent }) => {
+const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole, onMessageSent }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +20,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ receiverId, senderRole, onMes
     }
 
     try {
-      console.log('Sending message:', { sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message });
+      console.log('Sending message:', { sender_id: senderId, receiver_id: receiverId, message });
 
       const response = await fetch('/api/dashboard/messages/sendMessage', {
         method: 'POST',
@@ -37,21 +37,23 @@ const MessageForm: React.FC<MessageFormProps> = ({ receiverId, senderRole, onMes
       }
 
       onMessageSent();
-      setMessage(''); // Clear the message input
+      setMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Message</label>
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
-      </div>
-      <button type="submit">Send</button>
-    </form>
+    <div className="send-message-box">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Message</label>
+          <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
+        </div>
+        <button type="submit">Send</button>
+      </form>
+    </div>
   );
 };
 
-export default MessageForm;
+export default SendMessageBox;

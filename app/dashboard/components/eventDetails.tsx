@@ -1,13 +1,13 @@
-// eventDetails.tsx
 import React, { useState } from 'react';
-import { Event } from '@/types/types';
+import { Event, UserRole } from '@/types/types';
 import MessageForm from './messageForm';
 
 interface EventDetailsProps {
   event: Event;
+  senderRole: UserRole; // Add senderRole prop
 }
 
-const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
+const EventDetails: React.FC<EventDetailsProps> = ({ event, senderRole }) => {
   const [showMessageForm, setShowMessageForm] = useState(false);
 
   const handleSendMessage = () => {
@@ -22,7 +22,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
       <p>{event.address}</p>
       <button onClick={handleSendMessage}>Send Message</button>
       {showMessageForm && (
-        <MessageForm receiverId={event.organizer_id} onMessageSent={() => setShowMessageForm(false)} />
+        <MessageForm receiverId={event.organizer_id} senderRole={senderRole} onMessageSent={() => setShowMessageForm(false)} />
       )}
     </div>
   );

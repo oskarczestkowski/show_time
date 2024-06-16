@@ -1,4 +1,3 @@
-// components/AsideLeft.tsx
 "use client";
 
 import { motion, useAnimation } from "framer-motion";
@@ -44,7 +43,7 @@ const AsideLeft = () => {
         <div className="relative h-full">
           <div className="h-full bg-slate-900 w-full max-w-96 border-r border-t border-amber-200 mt-[6px]">
             {isRender ? <CalendarElement /> : null}
-            {user ? <Inbox userId={user.id} /> : <p>Loading user...</p>}
+            {user ? <Inbox userId={user.id} userRole={user.role} /> : <p>Loading user...</p>}
           </div>
         </div>
       </motion.aside>

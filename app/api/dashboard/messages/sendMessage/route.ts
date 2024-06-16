@@ -1,6 +1,6 @@
-// /app/api/messages/send/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/app/db";
+import { UserRole } from "@/types/types";
 
 export async function POST(request: NextRequest) {
     try {
@@ -16,21 +16,33 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Fetch the user_id using the organizer_id (receiver_id)
-        const organizerRecord = await db.client.collection("organizers").getFirstListItem(`id="${receiver_id}"`);
-        const user_id = organizerRecord.user_id;
+        // Fetch sender details to determine their role
+        const senderRecord = await db.client.collection("users").getFirstListItem(`id="${sender_id}"`);
+        const senderRole: UserRole = senderRecord.role;
 
-        if (!user_id) {
-            console.error('User ID not found for the given organizer ID:', receiver_id);
+        let recipientUserId: string | null = null;
+
+        if (senderRole === 'artist') {
+            // If the sender is an artist, the receiver_id is an organizer ID
+            const organizerRecord = await db.client.collection("organizers").getFirstListItem(`id="${receiver_id}"`);
+            recipientUserId = organizerRecord.user_id;
+        } else if (senderRole === 'organizer') {
+            // If the sender is an organizer, the receiver_id is an artist ID
+            const artistRecord = await db.client.collection("artists").getFirstListItem(`id="${receiver_id}"`);
+            recipientUserId = artistRecord.user_id;
+        }
+
+        if (!recipientUserId) {
+            console.error('User ID not found for the given receiver ID:', receiver_id);
             return new NextResponse(
-                JSON.stringify({ error: 'User ID not found for the given organizer ID' }),
+                JSON.stringify({ error: 'User ID not found for the given receiver ID' }),
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
 
         const newMessage = await db.client.collection("messages").create({
             sender_id,
-            receiver_id: user_id,
+            receiver_id: recipientUserId,
             message,
         });
 

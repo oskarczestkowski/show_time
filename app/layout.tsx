@@ -1,6 +1,7 @@
+// app/layout.tsx
 'use client';
 
-import './globals.css';
+import './globals.css'
 import { UserProvider } from './contexts/UserContext';
 import { ReactNode, useEffect } from 'react';
 
@@ -11,10 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     document.body.appendChild(modalRoot);
 
     return () => {
-      const element = document.getElementById('modal-root');
-      if (element) {
-        document.body.removeChild(element);
-      }
+      document.body.removeChild(modalRoot);
     };
   }, []);
 
@@ -26,7 +24,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <UserProvider>
           {children}
-          <div id="modal-root" />
         </UserProvider>
       </body>
     </html>

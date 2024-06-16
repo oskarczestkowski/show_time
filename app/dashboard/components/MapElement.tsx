@@ -1,9 +1,8 @@
-// MapElement.tsx
-"use client";
 import React, { useEffect, useState } from "react";
 import GoogleMapReact from 'google-map-react';
-import { Event } from "@/types/types";
+import { Event, UserRole } from "@/types/types"; // Ensure this path is correct
 import EventDetails from "./eventDetails";
+import SendMessageBox from "./sendMessageBox";
 
 interface CustomMarkerProps {
   lat: number;
@@ -18,9 +17,10 @@ const CustomMarker: React.FC<CustomMarkerProps> = ({ iconUrl, onClick }) => (
   </div>
 );
 
-const MapElement = () => {
+const MapElement: React.FC<{ userRole: UserRole }> = ({ userRole }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [showSendMessageBox, setShowSendMessageBox] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -38,7 +38,7 @@ const MapElement = () => {
   }, []);
 
   const handleMarkerClick = (event: Event) => {
-    console.log("Marker clicked:", event);
+    console.log("Marker clicked:", event); // Add this line
     setSelectedEvent(event);
   };
 
@@ -58,7 +58,7 @@ const MapElement = () => {
         bootstrapURLKeys={{ key: "AIzaSyD75EWmDGLt6lq4KlZmniElKohX5GSIXjA" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
-        onChildClick={(key) => {
+        onChildClick={(key, childProps) => {
           const event = events.find(e => e.id === key);
           if (event) handleMarkerClick(event);
         }}
@@ -76,11 +76,20 @@ const MapElement = () => {
 
       {selectedEvent && (
         <div className="event-details-container absolute top-0 left-0 bg-white p-4 shadow-lg">
-          <EventDetails event={selectedEvent} />
+          <EventDetails event={selectedEvent} senderRole={userRole} />
+          <button onClick={() => setShowSendMessageBox(true)}>Send Message</button>
         </div>
+      )}
+
+      {showSendMessageBox && selectedEvent && (
+        <SendMessageBox 
+          receiverId={selectedEvent.organizer_id} 
+          senderRole={userRole} 
+          onMessageSent={() => setShowSendMessageBox(false)} 
+        />
       )}
     </div>
   );
-}
+};
 
 export default MapElement;
