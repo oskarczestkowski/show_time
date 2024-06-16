@@ -9,6 +9,7 @@ import AsideRight from '../components/AsideRight';
 import { Events } from "../components/Events";
 import { useUser } from '@/app/contexts/UserContext';
 import { User } from '@/types/types';
+import MessageForm from '../components/messageForm';
 
 export default function ProtectedPage() {
   const router = useRouter();
@@ -86,6 +87,7 @@ export default function ProtectedPage() {
         <Events />
         <AsideLeft />
         <AsideRight appUser={user} />
+        
       </div>
     </div>
   );

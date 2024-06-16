@@ -4,10 +4,9 @@ import db from "@/app/db";
 
 export async function GET(request: NextRequest) {
     try {
-        const events = await db.client.collection("event").getFullList({
-            
-        });
+        const events = await db.client.collection("event").getFullList();
         
+        console.log('Fetched events:', events);
         return NextResponse.json(events);
     } catch (err: any) {
         console.error('Error fetching events:', err);

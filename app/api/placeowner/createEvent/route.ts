@@ -1,3 +1,4 @@
+// pages/api/placeowner/createEvent.ts
 import { NextRequest, NextResponse } from "next/server";
 import axios from 'axios';
 import db from "@/app/db";
@@ -5,10 +6,10 @@ import db from "@/app/db";
 export async function POST(request: NextRequest) {
     try {
         const authHeader = request.headers.get('Authorization');
-        let authToken = authHeader?.split(' ')[1]; // Extract token from 'Bearer <token>'
+        let authToken = authHeader?.split(' ')[1];
 
         if (authToken) {
-            authToken = authToken.trim(); // Trim any extraneous spaces or line breaks
+            authToken = authToken.trim();
         }
 
         if (!authToken) {
@@ -22,12 +23,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.log("Received auth token:", authToken);
-
         const isAuthenticated = await db.isAuthenticated(authToken);
-        console.log("Is authenticated:", isAuthenticated);
         if (!isAuthenticated) {
-            console.error('Authentication token is invalid');
             return new NextResponse(
                 JSON.stringify({ error: 'Authentication token is invalid' }),
                 {
@@ -39,7 +36,6 @@ export async function POST(request: NextRequest) {
 
         const { user_id, street_address, city, state, postal_code, country, date, description, event_name } = await request.json();
 
-        // Validate the input
         if (!user_id || !street_address || !city || !state || !postal_code || !country || !date || !description || !event_name) {
             return new NextResponse(
                 JSON.stringify({ error: 'All fields are required' }),
@@ -50,9 +46,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.log("Request body:", { user_id, street_address, city, state, postal_code, country, date, description, event_name });
-
-        // Fetch the organizer_id using the user_id
         const organizerRecord = await db.client.collection("organizers").getFirstListItem(`user_id='${user_id}'`);
 
         if (!organizerRecord) {
@@ -66,11 +59,8 @@ export async function POST(request: NextRequest) {
         }
 
         const organizer_id = organizerRecord.id;
-
-        // Składanie pełnego adresu
         const fullAddress = `${street_address}, ${city}, ${state}, ${postal_code}, ${country}`;
 
-        // Geocoding address to get latitude and longitude
         const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
             params: {
                 address: fullAddress,
@@ -79,7 +69,6 @@ export async function POST(request: NextRequest) {
         });
 
         if (response.data.status !== 'OK') {
-            console.error('Geocoding error:', response.data);
             return new NextResponse(
                 JSON.stringify({ error: 'Failed to geocode address' }),
                 {
@@ -90,20 +79,18 @@ export async function POST(request: NextRequest) {
         }
 
         const location = response.data.results[0].geometry.location;
-        console.log("Geocoded location:", location);
+        const formattedDate = new Date(date).toISOString(); // Ensure the date is in ISO format string
 
-        // Create event record
         const eventDetails = await db.client.collection("event").create({
             organizer_id,
             name: event_name,
             description,
-            date,
+            date: formattedDate,
             address: fullAddress,
             latitude: location.lat,
             longitude: location.lng
         });
 
-        console.log("Event created successfully:", eventDetails);
         return NextResponse.json({ success: true, eventDetails });
     } catch (err: any) {
         console.error('Error processing request:', err);

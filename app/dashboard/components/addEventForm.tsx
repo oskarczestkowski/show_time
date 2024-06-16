@@ -79,6 +79,17 @@ const EventForm = ({ user }: { user: User }) => {
     });
   }, []);
 
+  const formatDateTime = (dateTime: string): string => {
+    const dateObj = new Date(dateTime);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const hours = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -110,6 +121,8 @@ const EventForm = ({ user }: { user: User }) => {
       return;
     }
 
+    const formattedDate = formatDateTime(date);
+
     try {
       const response = await fetch('/api/placeowner/createEvent', {
         method: 'POST',
@@ -124,7 +137,7 @@ const EventForm = ({ user }: { user: User }) => {
           state,
           postal_code: postalCode,
           country,
-          date,
+          date: formattedDate,
           description,
           event_name: eventName
         }),

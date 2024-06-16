@@ -1,18 +1,47 @@
+// MapElement.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import GoogleMapReact from 'google-map-react';
-import { TbLetterS } from "react-icons/tb";
-import dynamic from 'next/dynamic';
+import { Event } from "@/types/types";
+import EventDetails from "./eventDetails";
 
-const CalendarElement = dynamic(() => import('./CalendarElement'), { ssr: false });
+interface CustomMarkerProps {
+  lat: number;
+  lng: number;
+  iconUrl: string;
+  onClick: () => void;
+}
 
-const EventMarker = ({ text }: any) => (
-  <div className="marker">
-    <TbLetterS size={30} />
+const CustomMarker: React.FC<CustomMarkerProps> = ({ iconUrl, onClick }) => (
+  <div onClick={onClick} style={{ cursor: 'pointer' }}>
+    <img src={iconUrl} alt="Event Marker" style={{ width: '24px', height: '24px' }} />
   </div>
 );
 
 const MapElement = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/dashboard/getEvents');
+        const data = await response.json();
+        setEvents(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const handleMarkerClick = (event: Event) => {
+    console.log("Marker clicked:", event);
+    setSelectedEvent(event);
+  };
+
   const defaultProps = {
     center: {
       lat: 54.373905264586014,
@@ -21,75 +50,37 @@ const MapElement = () => {
     zoom: 14
   };
 
-  const [events, setEvents] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch('/api/dashboard/getEvents', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
-
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error || 'Failed to fetch events');
-        }
-
-        const data = await response.json();
-        console.log('Fetched events:', data); // Log fetched events
-        setEvents(data);
-        setLoading(false);
-      } catch (err) {
-        if (err instanceof Error) {
-          console.error('Error fetching events:', err.message);
-          setError(err.message);
-        } else {
-          console.error('Unexpected error:', err);
-          setError('An unexpected error occurred');
-        }
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const iconUrl = "/icons/concert.png"; // Update this with the actual path to your icon
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full relative">
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyD75EWmDGLt6lq4KlZmniElKohX5GSIXjA" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
+        onChildClick={(key) => {
+          const event = events.find(e => e.id === key);
+          if (event) handleMarkerClick(event);
+        }}
       >
-        {events.map(event => (
-          <EventMarker
+        {events.map((event) => (
+          <CustomMarker
             key={event.id}
             lat={event.latitude}
             lng={event.longitude}
-            text={event.name}
+            iconUrl={iconUrl}
+            onClick={() => handleMarkerClick(event)}
           />
         ))}
-        {/* Hardcoded marker for testing */}
-        <EventMarker
-          key="hardcoded"
-          lat={54.373905264586014}
-          lng={18.647007740230656}
-          text="Test"
-        />
       </GoogleMapReact>
+
+      {selectedEvent && (
+        <div className="event-details-container absolute top-0 left-0 bg-white p-4 shadow-lg">
+          <EventDetails event={selectedEvent} />
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default MapElement;

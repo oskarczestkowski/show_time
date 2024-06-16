@@ -5,6 +5,8 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import ToggleButton from "./ToggleButton";
+import Inbox from "./Inbox";
+import { useUser } from '@/app/contexts/UserContext';
 
 const CalendarElement = dynamic(() => import('./CalendarElement'), { ssr: false });
 
@@ -12,6 +14,7 @@ const AsideLeft = () => {
   const [isRender, setIsRender] = useState(true);
   const mainControls = useAnimation();
   const initialX = -384;
+  const { user } = useUser();
 
   useEffect(() => {
     if (isRender) {
@@ -20,6 +23,11 @@ const AsideLeft = () => {
       mainControls.start("hidden");
     }
   }, [isRender]);
+
+  useEffect(() => {
+    console.log('AsideLeft component mounted'); // Debugging information
+    console.log('User:', user); // Debugging information
+  }, [user]);
 
   return (
     <>
@@ -36,6 +44,7 @@ const AsideLeft = () => {
         <div className="relative h-full">
           <div className="h-full bg-slate-900 w-full max-w-96 border-r border-t border-amber-200 mt-[6px]">
             {isRender ? <CalendarElement /> : null}
+            {user ? <Inbox userId={user.id} /> : <p>Loading user...</p>}
           </div>
         </div>
       </motion.aside>
