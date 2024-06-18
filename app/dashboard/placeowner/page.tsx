@@ -6,9 +6,10 @@ import Navigation from "@/components/navigation/Navigation";
 import { Map } from "../components/Map";
 import AsideLeft from '../components/AsideLeft';
 import AsideRight from '../components/AsideRight';
-import { Events } from '../components/Events';
+import { Events } from "../components/Events";
 import { useUser } from '@/app/contexts/UserContext';
-import EventForm from '../components/addEventForm';
+import { User } from '@/types/types';
+import MessageForm from '../components/messageForm';
 
 export default function ProtectedPage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function ProtectedPage() {
           throw new Error('Authentication token is missing');
         }
 
-        const response = await fetch('/api/dashboard', {
+        const response = await fetch('/api/dashboard/getEvents', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${authToken}`,
@@ -39,8 +40,7 @@ export default function ProtectedPage() {
 
         const data = await response.json();
         setUser(data.user);
-        if (data.user) console.log('User found in context:', data.user);
-        else console.log('No user data found');
+        console.log(data.user)
         setLoading(false);
       } catch (err) {
         if (err instanceof Error) {
@@ -87,7 +87,7 @@ export default function ProtectedPage() {
         <Events />
         <AsideLeft />
         <AsideRight appUser={user} />
-        <EventForm user={user} /> {/* Pass user object as a prop */}
+        
       </div>
     </div>
   );

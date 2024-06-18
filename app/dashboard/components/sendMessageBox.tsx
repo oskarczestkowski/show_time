@@ -1,5 +1,6 @@
+// components/SendMessageBox.tsx
 import React, { useState } from 'react';
-import { UserRole } from '@/types/types'; // Ensure this path is correct
+import { UserRole } from '@/types/types';
 
 interface SendMessageBoxProps {
   receiverId: string;
@@ -7,7 +8,7 @@ interface SendMessageBoxProps {
   onMessageSent: () => void;
 }
 
-const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole, onMessageSent }) => {
+const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole,  onMessageSent }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,12 +21,12 @@ const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole,
     }
 
     try {
-      console.log('Sending message:', { sender_id: senderId, receiver_id: receiverId, message });
+      console.log('Sending message:', { sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message });
 
       const response = await fetch('/api/dashboard/messages/sendMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message }),
+        body: JSON.stringify({ sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message}),
       });
 
       const data = await response.json();

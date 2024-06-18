@@ -1,13 +1,20 @@
-// types.ts
+// types/types.ts
 export type UserRole = 'artist' | 'organizer';
 
 export interface User {
   id: string;
   email: string;
   role: UserRole;
-  avatar: string | null; // Add avatar field
+  avatar: string | null;
+  stage_name?: string;
+  name?: string;
+  genre?: string;
+  bio?: string;
+  company_name?: string;
+  social_media_links?: Record<string, string>
   // Add other relevant user properties
 }
+
 
 // types.ts
 

@@ -23,31 +23,19 @@ export async function POST(request: NextRequest) {
         const senderRole: UserRole = senderRecord.role;
         console.log('Sender role:', senderRole);
 
-        let recipientUserId: string | null = null;
+        let recipientRecord: any = null;
 
         if (senderRole === 'artist') {
             console.log('Fetching organizer record...');
-            // If the sender is an artist, the receiver_id is an organizer ID
-            try {
-                const organizerRecord = await db.client.collection("organizers").getFirstListItem(`id="${receiver_id}"`);
-                console.log('Organizer record:', organizerRecord);
-                recipientUserId = organizerRecord.user_id;
-            } catch (err) {
-                console.error('Error fetching organizer record:', err);
-            }
+            recipientRecord = await db.client.collection("users").getFirstListItem(`id="${receiver_id}"`);
+            console.log('Organizer record:', recipientRecord);
         } else if (senderRole === 'organizer') {
             console.log('Fetching artist record...');
-            // If the sender is an organizer, the receiver_id is an artist ID
-            try {
-                const artistRecord = await db.client.collection("users").getFirstListItem(`id="${receiver_id}"`);
-                console.log('Artist record:', artistRecord);
-                recipientUserId = artistRecord.user_id;
-            } catch (err) {
-                console.error('Error fetching artist record:', err);
-            }
+            recipientRecord = await db.client.collection("users").getFirstListItem(`id="${receiver_id}"`);
+            console.log('Artist record:', recipientRecord);
         }
 
-        if (!recipientUserId) {
+        if (!recipientRecord) {
             console.error('User ID not found for the given receiver ID:', receiver_id);
             return new NextResponse(
                 JSON.stringify({ error: 'User ID not found for the given receiver ID' }),
@@ -57,7 +45,7 @@ export async function POST(request: NextRequest) {
 
         const newMessage = await db.client.collection("messages").create({
             sender_id,
-            receiver_id: recipientUserId,
+            receiver_id,  // Use the receiver_id directly from the users table
             message,
         });
 

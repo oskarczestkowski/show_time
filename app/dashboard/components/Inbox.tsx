@@ -1,10 +1,12 @@
+// components/Inbox.tsx
 import React, { useEffect, useState } from "react";
-import { Message, UserRole } from "@/types/types"; // Ensure this path is correct
+import { Message, UserRole } from "@/types/types";
 import SendMessageBox from "./sendMessageBox";
+import SendReplyBox from "./sendReplyBox";
 
 interface InboxProps {
   userId: string;
-  userRole: UserRole; // Add userRole prop
+  userRole: UserRole;
 }
 
 const Inbox: React.FC<InboxProps> = ({ userId, userRole }) => {
@@ -62,9 +64,10 @@ const Inbox: React.FC<InboxProps> = ({ userId, userRole }) => {
         <p>No messages</p>
       )}
       {replyReceiverId && (
-        <SendMessageBox 
+        <SendReplyBox
           receiverId={replyReceiverId} 
           senderRole={userRole}
+          context="inbox"  // Pass the context
           onMessageSent={() => setReplyReceiverId(null)} 
         />
       )}

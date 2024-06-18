@@ -4,7 +4,7 @@ import { User } from "@/types/types";
 
 const UserAvatar = ({ user }: { user: User }) => (
   <div className="flex flex-col items-center">
-    <p className="font-bold">{user.role}</p>
+    <p className="font-bold text-amber-200">{user.role}</p>
     {user.avatar ? (
       <Image
         src={user.avatar}

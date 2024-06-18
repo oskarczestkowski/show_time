@@ -1,4 +1,3 @@
-// app/layout.tsx
 'use client';
 
 import './globals.css'
@@ -12,7 +11,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     document.body.appendChild(modalRoot);
 
     return () => {
-      document.body.removeChild(modalRoot);
+      const existingModalRoot = document.getElementById('modal-root');
+      if (existingModalRoot && document.body.contains(existingModalRoot)) {
+        document.body.removeChild(existingModalRoot);
+      }
     };
   }, []);
 

@@ -1,15 +1,15 @@
-// components/MessageForm.tsx
+// components/SendMessageBox.tsx
 import React, { useState } from 'react';
 import { UserRole } from '@/types/types';
 
-interface MessageFormProps {
+interface SendReplyBoxProps {
   receiverId: string;
   senderRole: UserRole;
   context: string; // Add context prop
   onMessageSent: () => void;
 }
 
-const MessageForm: React.FC<MessageFormProps> = ({ receiverId, senderRole, context, onMessageSent }) => {
+const SendReplyBox: React.FC<SendReplyBoxProps> = ({ receiverId, senderRole, context, onMessageSent }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,7 +24,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ receiverId, senderRole, conte
     try {
       console.log('Sending message:', { sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message, context });
 
-      const response = await fetch('/api/dashboard/messages/sendMessage', {
+      const response = await fetch('/api/dashboard/messages/sendReplies', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message, context }),
@@ -46,14 +46,16 @@ const MessageForm: React.FC<MessageFormProps> = ({ receiverId, senderRole, conte
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Message</label>
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
-      </div>
-      <button type="submit">Send</button>
-    </form>
+    <div className="send-message-box">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Message</label>
+          <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
+        </div>
+        <button type="submit">Send</button>
+      </form>
+    </div>
   );
 };
 
-export default MessageForm;
+export default SendReplyBox;

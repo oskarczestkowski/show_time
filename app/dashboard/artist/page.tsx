@@ -25,7 +25,7 @@ export default function ProtectedPage() {
           throw new Error('Authentication token is missing');
         }
 
-        const response = await fetch('/api/dashboard', {
+        const response = await fetch('/api/dashboard/getEvents', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${authToken}`,
