@@ -67,6 +67,14 @@ export class DatabaseClient {
       return null;
     }
   }
+
+  async Logout()  {
+        // Clear PocketBase auth store
+        this.client.authStore.clear();
+
+        // Remove the auth token from local storage
+        localStorage.removeItem('pb_auth');
+  }
 }
 
 export const db = new DatabaseClient();

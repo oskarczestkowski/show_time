@@ -4,10 +4,11 @@ import { FaEdit, FaSave } from "react-icons/fa";
 
 interface BioSectionProps {
   bio: string;
-  onSave: (newBio: string) => void;
+  onSave?: (newBio: string) => void;
+  editable?: boolean;
 }
 
-const BioSection: React.FC<BioSectionProps> = ({ bio, onSave }) => {
+const BioSection: React.FC<BioSectionProps> = ({ bio, onSave, editable = true }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [bioText, setBioText] = useState(bio);
 
@@ -16,7 +17,9 @@ const BioSection: React.FC<BioSectionProps> = ({ bio, onSave }) => {
   };
 
   const handleSaveClick = () => {
-    onSave(bioText);
+    if (onSave) {
+      onSave(bioText);
+    }
     setIsEditing(false);
   };
 
@@ -24,10 +27,12 @@ const BioSection: React.FC<BioSectionProps> = ({ bio, onSave }) => {
     <div className="bio-section text-white w-full">
       <div className="flex justify-between items-center">
         <h3>Bio</h3>
-        {isEditing ? (
-          <FaSave className="cursor-pointer" onClick={handleSaveClick} />
-        ) : (
-          <FaEdit className="cursor-pointer" onClick={handleEditClick} />
+        {editable && (
+          isEditing ? (
+            <FaSave className="cursor-pointer" onClick={handleSaveClick} />
+          ) : (
+            <FaEdit className="cursor-pointer" onClick={handleEditClick} />
+          )
         )}
       </div>
       {isEditing ? (

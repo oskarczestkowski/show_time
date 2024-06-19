@@ -1,6 +1,7 @@
 "use client";
 import { User } from "@/types/types";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { StandaloneSearchBox } from '@react-google-maps/api';
 
 interface AddressComponents {
   street_number?: string;
@@ -22,8 +23,14 @@ const componentTypes = [
 
 type ComponentType = typeof componentTypes[number];
 
-const EventForm = ({ user }: { user: User }) => {
+interface EventFormProps {
+  user: User;
+  onClose: () => void;
+}
+
+const EventForm: React.FC<EventFormProps> = ({ user, onClose }) => {
   const locationInputRef = useRef<HTMLInputElement>(null);
+  const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
   const [streetAddress, setStreetAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
@@ -34,50 +41,29 @@ const EventForm = ({ user }: { user: User }) => {
   const [eventName, setEventName] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadScript = (url: string, callback: () => void) => {
-      const script = document.createElement('script');
-      script.src = url;
-      script.async = true;
-      script.defer = true;
-      script.onload = callback;
-      document.head.appendChild(script);
-    };
+  const handlePlaceChanged = () => {
+    const place = searchBoxRef.current?.getPlaces()?.[0];
+    if (!place || !place.geometry) {
+      alert(`No details available for input: '${place?.name}'`);
+      return;
+    }
 
-    loadScript(`https://maps.googleapis.com/maps/api/js?key=AIzaSyD75EWmDGLt6lq4KlZmniElKohX5GSIXjA&libraries=places`, () => {
-      const { google } = window as any;
-      if (google && google.maps) {
-        const autocomplete = new google.maps.places.Autocomplete(locationInputRef.current as HTMLInputElement, {
-          types: ['address'],
-          fields: ['address_components', 'geometry'],
-        });
-
-        autocomplete.addListener('place_changed', () => {
-          const place = autocomplete.getPlace();
-          if (!place.geometry) {
-            alert(`No details available for input: '${place.name}'`);
-            return;
-          }
-
-          const addressComponents: AddressComponents = {};
-          place.address_components?.forEach((component: any) => {
-            const type = component.types[0] as ComponentType;
-            addressComponents[type] = component.long_name;
-          });
-
-          const streetAddr = `${addressComponents.street_number || ''} ${addressComponents.route || ''}`.trim();
-          console.log('Autocomplete result:', addressComponents);
-          console.log('Constructed street address:', streetAddr);
-
-          setStreetAddress(streetAddr);
-          setCity(addressComponents.locality || '');
-          setState(addressComponents.administrative_area_level_1 || '');
-          setPostalCode(addressComponents.postal_code || '');
-          setCountry(addressComponents.country || '');
-        });
-      }
+    const addressComponents: AddressComponents = {};
+    place.address_components?.forEach((component) => {
+      const type = component.types[0] as ComponentType;
+      addressComponents[type] = component.long_name;
     });
-  }, []);
+
+    const streetAddr = `${addressComponents.street_number || ''} ${addressComponents.route || ''}`.trim();
+    console.log('Autocomplete result:', addressComponents);
+    console.log('Constructed street address:', streetAddr);
+
+    setStreetAddress(streetAddr);
+    setCity(addressComponents.locality || '');
+    setState(addressComponents.administrative_area_level_1 || '');
+    setPostalCode(addressComponents.postal_code || '');
+    setCountry(addressComponents.country || '');
+  };
 
   const formatDateTime = (dateTime: string): string => {
     const dateObj = new Date(dateTime);
@@ -93,10 +79,8 @@ const EventForm = ({ user }: { user: User }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Initialize an array to collect error messages
     const missingFields: string[] = [];
 
-    // Check each field and log which one is missing
     if (!eventName) missingFields.push('Event Name');
     if (!description) missingFields.push('Description');
     if (!date) missingFields.push('Date');
@@ -106,7 +90,6 @@ const EventForm = ({ user }: { user: User }) => {
     if (!postalCode) missingFields.push('Postal Code');
     if (!country) missingFields.push('Country');
 
-    // If there are missing fields, set an error message and log them
     if (missingFields.length > 0) {
       const errorMessage = `Please fill in all required fields: ${missingFields.join(', ')}`;
       setError(errorMessage);
@@ -150,7 +133,6 @@ const EventForm = ({ user }: { user: User }) => {
         return;
       }
 
-      // Reset form or handle success
       setStreetAddress('');
       setCity('');
       setState('');
@@ -160,6 +142,8 @@ const EventForm = ({ user }: { user: User }) => {
       setDescription('');
       setEventName('');
       setError(null);
+
+      onClose();
 
     } catch (err) {
       console.error('Error creating event:', err);
@@ -183,7 +167,9 @@ const EventForm = ({ user }: { user: User }) => {
       </div>
       <div>
         <label>Street Address</label>
-        <input type="text" ref={locationInputRef} placeholder="Enter your address" required />
+        <StandaloneSearchBox onLoad={ref => (searchBoxRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
+          <input type="text" ref={locationInputRef} placeholder="Enter your address" required />
+        </StandaloneSearchBox>
       </div>
       <div>
         <label>City</label>

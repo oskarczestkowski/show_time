@@ -1,4 +1,4 @@
-import SupabaseLogo from "./SupabaseLogo";
+
 
 export default function Header() {
   return (

@@ -2,11 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-import Navigation from "@/components/navigation/Navigation";
+import Navigation from '../components/Navigation';
 import { Map } from "../components/Map";
 import AsideLeft from '../components/AsideLeft';
 import AsideRight from '../components/AsideRight';
-import { Events } from "../components/Events";
 import { useUser } from '@/app/contexts/UserContext';
 import { User } from '@/types/types';
 import MessageForm from '../components/messageForm';
@@ -81,10 +80,9 @@ export default function ProtectedPage() {
 
   return (
     <div className="h-screen">
-      <Navigation />
+      <Navigation user={user} />
       <div className="flex h-full pt-12 justify-center">
         <Map />
-        <Events />
         <AsideLeft />
         <AsideRight appUser={user} />
         

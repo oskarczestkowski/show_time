@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 
 interface SocialMediaLinksProps {
   links: Record<string, string>;
-  onChange: (platform: string, link: string) => void;
+  onChange?: (platform: string, link: string) => void;
+  editable?: boolean;
 }
 
-const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ links, onChange }) => {
+const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ links, onChange, editable = true }) => {
   const [inputs, setInputs] = useState(links);
 
   useEffect(() => {
@@ -17,7 +18,9 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ links, onChange }) 
   const handleInputChange = (platform: string, link: string) => {
     const updatedLinks = { ...inputs, [platform]: link };
     setInputs(updatedLinks);
-    onChange(platform, link);
+    if (onChange) {
+      onChange(platform, link);
+    }
   };
 
   const renderIcon = (platform: string, Icon: any, colorClass: string) => (
@@ -30,13 +33,15 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ links, onChange }) 
       >
         <Icon size={24} />
       </a>
-      <input
-        type="text"
-        value={inputs[platform] ? platform : ''}
-        onChange={(e) => handleInputChange(platform, e.target.value)}
-        placeholder={`Enter ${platform} link`}
-        className="w-full p-1 text-center bg-gray-900 text-white rounded-sm"
-      />
+      {editable && (
+        <input
+          type="text"
+          value={inputs[platform] || ''}
+          onChange={(e) => handleInputChange(platform, e.target.value)}
+          placeholder={`Enter ${platform} link`}
+          className="w-full p-1 text-center bg-gray-900 text-white rounded-sm"
+        />
+      )}
     </div>
   );
 

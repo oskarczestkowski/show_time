@@ -2,20 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-import Navigation from "@/components/navigation/Navigation";
+import Navigation from '../components/Navigation';
 import { Map } from "../components/Map";
 import AsideLeft from '../components/AsideLeft';
 import AsideRight from '../components/AsideRight';
-import { Events } from "../components/Events";
+
 import { useUser } from '@/app/contexts/UserContext';
 import { User } from '@/types/types';
-import MessageForm from '../components/messageForm';
+import Modal from '../components/addEventModal';
+import EventForm from '../components/addEventForm';
 
 export default function ProtectedPage() {
   const router = useRouter();
   const { user, setUser, fetchUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -67,6 +69,14 @@ export default function ProtectedPage() {
     }
   }, [loading, user, error, router]);
 
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -81,14 +91,15 @@ export default function ProtectedPage() {
 
   return (
     <div className="h-screen">
-      <Navigation />
+      <Navigation user={user} onOpenModal={handleOpenModal} />
       <div className="flex h-full pt-12 justify-center">
         <Map />
-        <Events />
         <AsideLeft />
         <AsideRight appUser={user} />
-        
       </div>
+      <Modal isVisible={isModalVisible} onClose={handleCloseModal}>
+        <EventForm user={user} onClose={handleCloseModal} />
+      </Modal>
     </div>
   );
 }

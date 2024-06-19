@@ -1,8 +1,9 @@
 // components/Inbox.tsx
 import React, { useEffect, useState } from "react";
 import { Message, UserRole } from "@/types/types";
-import SendMessageBox from "./sendMessageBox";
 import SendReplyBox from "./sendReplyBox";
+import GetOrganizerProfile from "./GetOrganizerProfile";
+import GetArtistProfile from "./GetArtistProfile";
 
 interface InboxProps {
   userId: string;
@@ -57,6 +58,11 @@ const Inbox: React.FC<InboxProps> = ({ userId, userRole }) => {
               <p>{message.message}</p>
               <p>{new Date(message.created).toLocaleString()}</p>
               <button onClick={() => setReplyReceiverId(message.sender_id)}>Reply</button>
+              {userRole === "artist" ? (
+                <GetOrganizerProfile organizerId={message.sender_id} />
+              ) : (
+                <GetArtistProfile artistId={message.sender_id} />
+              )}
             </li>
           ))}
         </ul>

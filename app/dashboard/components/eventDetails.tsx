@@ -1,7 +1,7 @@
-// components/EventDetails.tsx
 import React, { useState } from 'react';
 import { Event, UserRole } from '@/types/types';
 import MessageForm from './messageForm';
+import ProfileModal from './profileModal';
 
 interface EventDetailsProps {
   event: Event;
@@ -10,13 +10,35 @@ interface EventDetailsProps {
 
 const EventDetails: React.FC<EventDetailsProps> = ({ event, senderRole }) => {
   const [showMessageForm, setShowMessageForm] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileData, setProfileData] = useState<any>(null);
 
   const handleSendMessage = () => {
     setShowMessageForm(true);
   };
 
+  const handleViewProfile = async () => {
+    setShowProfileModal(true);
+    try {
+      const response = await fetch(`/api/dashboard/profile/getUserProfileDetails/getOrganizerProfile`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'organizer_id': event.organizer_id
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch organizer profile');
+      }
+      const data = await response.json();
+      setProfileData(data);
+    } catch (error) {
+      console.error('Error fetching organizer profile:', error);
+    }
+  };
+
   return (
-    <div className="event-details">
+    <div className="profile-details">
       <h2>{event.name}</h2>
       <p>{event.description}</p>
       <p>{new Date(event.date).toLocaleString()}</p>
@@ -26,8 +48,16 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event, senderRole }) => {
         <MessageForm
           receiverId={event.organizer_id}
           senderRole={senderRole}
-          context="eventDetails"  // Pass the context
+          context="eventDetails"
           onMessageSent={() => setShowMessageForm(false)}
+        />
+      )}
+      <button onClick={handleViewProfile}>View Organizer Profile</button>
+      {showProfileModal && profileData && (
+        <ProfileModal
+          profile={profileData}
+          isOpen={showProfileModal}
+          onClose={() => setShowProfileModal(false)}
         />
       )}
     </div>

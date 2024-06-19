@@ -5,8 +5,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {/* Ładowanie biblioteki Google Maps JavaScript */}
-          <script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyD75EWmDGLt6lq4KlZmniElKohX5GSIXjA&libraries=places`} async defer></script>
+          {/* Other Head elements */}
         </Head>
         <body>
           <Main />
