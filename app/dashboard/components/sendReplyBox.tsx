@@ -46,13 +46,16 @@ const SendReplyBox: React.FC<SendReplyBoxProps> = ({ receiverId, senderRole, con
   };
 
   return (
-    <div className="send-message-box">
+    <div className="send-message-box border-t border-white">
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className='flex flex-col justify-center items-center gap-2 p-1'>
           <label>Message</label>
-          <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
+          <textarea className='border w-full border-white rounded-md text-black p-1'
+            rows={4}
+            value={message} onChange={(e) => setMessage(e.target.value)} required />
+          <button type="submit" className='btn'>Send</button>
+
         </div>
-        <button type="submit">Send</button>
       </form>
     </div>
   );

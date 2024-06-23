@@ -22,13 +22,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setUserState(null);
         return;
       }
-      
+
       const userModel = await db.getUser(authToken);
       if (!userModel) {
         setUserState(null);
         return;
       }
-      
+
       const user: User = {
         id: userModel.id,
         email: userModel.email,

@@ -42,7 +42,7 @@ const BioSection: React.FC<BioSectionProps> = ({ bio, onSave, editable = true })
           onChange={(e) => setBioText(e.target.value)}
         />
       ) : (
-        <p className="mt-2">{bio}</p>
+        <p className="mt-2 break-words">{bio}</p>
       )}
     </div>
   );

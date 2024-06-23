@@ -85,7 +85,7 @@ export default function ProtectedPage() {
         <Map />
         <AsideLeft />
         <AsideRight appUser={user} />
-        
+
       </div>
     </div>
   );

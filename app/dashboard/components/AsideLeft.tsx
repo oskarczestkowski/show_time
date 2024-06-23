@@ -23,10 +23,6 @@ const AsideLeft = () => {
     }
   }, [isRender]);
 
-  useEffect(() => {
-    console.log('AsideLeft component mounted'); // Debugging information
-    console.log('User:', user); // Debugging information
-  }, [user]);
 
   return (
     <>
@@ -46,8 +42,10 @@ const AsideLeft = () => {
             {user ? <Inbox userId={user.id} userRole={user.role} /> : <p>Loading user...</p>}
           </div>
         </div>
+
       </motion.aside>
       <ToggleButton isRender={isRender} onClick={() => setIsRender(!isRender)} side="left" />
+
     </>
   );
 };

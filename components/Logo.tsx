@@ -4,10 +4,10 @@ import { Roboto_Condensed } from "next/font/google";
 const roboto_condensed_main = Roboto_Condensed({
   weight: '800',
   subsets: ['latin'],
-  
+
 })
 
-export  function MinorLogo() {
+export function MinorLogo() {
   return (
 
     <Link href="/" className={`px-4 flex items-center justify-center text-2xl font-bold 
@@ -18,7 +18,7 @@ export  function MinorLogo() {
 
   );
 }
-export  function MajorLogo() {
+export function MajorLogo() {
   return (
 
     <Link href="/" className={`
@@ -26,7 +26,7 @@ export  function MajorLogo() {
     px-4 flex items-center 
     justify-center text-4xl font-bold text-amber-200 border-amber-200
      p-2  border-4 tracking-wide ${roboto_condensed_main.className}`}>
-    SHOWTIME
+      SHOWTIME
     </Link>
 
   );

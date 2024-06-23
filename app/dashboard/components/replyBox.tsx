@@ -51,11 +51,11 @@ const ReplyBox: React.FC<ReplyBoxProps> = ({ receiverId, onClose, onMessageSent 
       <div className="bg-white p-4 rounded shadow-lg">
         <button onClick={onClose} className="absolute top-0 right-0 p-2">X</button>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className='flex flex-col'>
             <label>Message</label>
             <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
           </div>
-          <button type="submit">Send</button>
+          <button type="submit" className='bg-red-500 text-white py-2 px-4 rounded'>Send</button>
         </form>
       </div>
     </div>,

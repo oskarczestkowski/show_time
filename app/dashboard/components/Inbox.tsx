@@ -47,17 +47,17 @@ const Inbox: React.FC<InboxProps> = ({ userId, userRole }) => {
   }, [userId]);
 
   return (
-    <div style={{ backgroundColor: 'white', color: 'black' }}>
-      <h2>Inbox</h2>
+    <div className="text-white p-1">
+      <h2 className="text-center text-2xl">Inbox</h2>
       {error && <p className="text-red-500">{error}</p>}
       {messages.length > 0 ? (
-        <ul>
+        <ul className="flex flex-col gap-1">
           {messages.map((message) => (
             <li key={message.id} style={{ marginBottom: '10px' }}>
               <p>From: {message.sender_email}</p>
               <p>{message.message}</p>
               <p>{new Date(message.created).toLocaleString()}</p>
-              <button onClick={() => setReplyReceiverId(message.sender_id)}>Reply</button>
+              <button className="btn" onClick={() => setReplyReceiverId(message.sender_id)}>Reply</button>
               {userRole === "artist" ? (
                 <GetOrganizerProfile organizerId={message.sender_id} />
               ) : (
@@ -71,10 +71,10 @@ const Inbox: React.FC<InboxProps> = ({ userId, userRole }) => {
       )}
       {replyReceiverId && (
         <SendReplyBox
-          receiverId={replyReceiverId} 
+          receiverId={replyReceiverId}
           senderRole={userRole}
           context="inbox"  // Pass the context
-          onMessageSent={() => setReplyReceiverId(null)} 
+          onMessageSent={() => setReplyReceiverId(null)}
         />
       )}
     </div>

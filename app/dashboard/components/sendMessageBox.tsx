@@ -8,7 +8,7 @@ interface SendMessageBoxProps {
   onMessageSent: () => void;
 }
 
-const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole,  onMessageSent }) => {
+const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole, onMessageSent }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,7 +26,7 @@ const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole,
       const response = await fetch('/api/dashboard/messages/sendMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message}),
+        body: JSON.stringify({ sender_id: senderId, receiver_id: receiverId, sender_role: senderRole, message }),
       });
 
       const data = await response.json();
@@ -51,7 +51,7 @@ const SendMessageBox: React.FC<SendMessageBoxProps> = ({ receiverId, senderRole,
           <label>Message</label>
           <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
         </div>
-        <button type="submit">Send</button>
+        <button type="submit" className='bg-red-500 text-white py-2 px-4 rounded'>Send</button>
       </form>
     </div>
   );
