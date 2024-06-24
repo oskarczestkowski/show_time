@@ -20,7 +20,7 @@ const MapElement: React.FC<{ userRole: UserRole }> = ({ userRole }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showSendMessageBox, setShowSendMessageBox] = useState(false);
-
+  const [isRenderModal, setIsRenderModal] = useState(false)
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -39,6 +39,7 @@ const MapElement: React.FC<{ userRole: UserRole }> = ({ userRole }) => {
   const handleMarkerClick = (event: Event) => {
     console.log("Marker clicked:", event);
     setSelectedEvent(event);
+    setIsRenderModal(true)
   };
 
   return (
@@ -65,18 +66,18 @@ const MapElement: React.FC<{ userRole: UserRole }> = ({ userRole }) => {
           ))}
         </GoogleMap>
 
-        {selectedEvent && (
+        {selectedEvent && isRenderModal && (
           <div className="event-details-container absolute top-0 left-0 bg-white p-4 shadow-lg">
-            <EventDetails event={selectedEvent} senderRole={userRole} />
+            <EventDetails event={selectedEvent} senderRole={userRole} setIsRenderModal={setIsRenderModal} />
             <button onClick={() => setShowSendMessageBox(true)}>Send Message</button>
           </div>
         )}
 
         {showSendMessageBox && selectedEvent && (
-          <SendMessageBox 
-            receiverId={selectedEvent.organizer_id} 
-            senderRole={userRole} 
-            onMessageSent={() => setShowSendMessageBox(false)} 
+          <SendMessageBox
+            receiverId={selectedEvent.organizer_id}
+            senderRole={userRole}
+            onMessageSent={() => setShowSendMessageBox(false)}
           />
         )}
       </div>
