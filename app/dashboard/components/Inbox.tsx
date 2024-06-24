@@ -51,7 +51,7 @@ const Inbox: React.FC<InboxProps> = ({ userId, userRole }) => {
       <h2 className="text-center text-2xl">Inbox</h2>
       {error && <p className="text-red-500">{error}</p>}
       {messages.length > 0 ? (
-        <ul className="flex flex-col gap-1">
+        <ul className="flex flex-col gap-1  overflow-y-scroll h-[32rem]">
           {messages.map((message) => (
             <li key={message.id} style={{ marginBottom: '10px' }}>
               <p>From: {message.sender_email}</p>

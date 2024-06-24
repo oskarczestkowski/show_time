@@ -29,7 +29,7 @@ interface EventFormProps {
 }
 
 const EventForm: React.FC<EventFormProps> = ({ user, onClose }) => {
-  const locationInputRef = useRef<HTMLInputElement>(null);
+  const locationInput = useRef<HTMLInputElement>(null);
   const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
   const [streetAddress, setStreetAddress] = useState('');
   const [city, setCity] = useState('');
@@ -44,7 +44,7 @@ const EventForm: React.FC<EventFormProps> = ({ user, onClose }) => {
   const handlePlaceChanged = () => {
     const place = searchBoxRef.current?.getPlaces()?.[0];
     if (!place || !place.geometry) {
-      alert(`No details available for input: '${place?.name}'`);
+      alert(`No details available for input className="border border-black": '${place?.name}'`);
       return;
     }
 
@@ -152,43 +152,43 @@ const EventForm: React.FC<EventFormProps> = ({ user, onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <label>Event Name</label>
-        <input type="text" value={eventName} onChange={(e) => setEventName(e.target.value)} required />
+        <input className="border border-black" type="text" value={eventName} onChange={(e) => setEventName(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>Description</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <textarea className="border border-black" value={description} onChange={(e) => setDescription(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>Date</label>
-        <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} required />
+        <input className="border border-black" type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>Street Address</label>
         <StandaloneSearchBox onLoad={ref => (searchBoxRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
-          <input type="text" ref={locationInputRef} placeholder="Enter your address" required />
+          <input className="border border-black" type="text" ref={locationInput} placeholder="Enter your address" required />
         </StandaloneSearchBox>
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>City</label>
-        <input type="text" value={city} onChange={(e) => setCity(e.target.value)} required />
+        <input className="border border-black" type="text" value={city} onChange={(e) => setCity(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>State/Province</label>
-        <input type="text" value={state} onChange={(e) => setState(e.target.value)} required />
+        <input className="border border-black" type="text" value={state} onChange={(e) => setState(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>Postal Code</label>
-        <input type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required />
+        <input className="border border-black" type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col">
         <label>Country</label>
-        <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
+        <input className="border border-black" type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
       </div>
       {error && <p className="text-red-500">{error}</p>}
-      <button type="submit">Submit</button>
+      <button type="submit" className="btn">Submit</button>
     </form>
   );
 };

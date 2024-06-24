@@ -38,7 +38,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event, senderRole }) => {
   };
 
   return (
-    <div className="profile-details">
+    <div className="profile-details fixed top-1/2 right-1/2 bg-white">
       <h2>{event.name}</h2>
       <p>{event.description}</p>
       <p>{new Date(event.date).toLocaleString()}</p>

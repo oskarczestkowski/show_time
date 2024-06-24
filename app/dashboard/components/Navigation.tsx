@@ -13,7 +13,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onOpenModal }) => {
       <div className="z-50">
         <MinorLogo />
       </div>
-      <div className="p-3 text-sm">
+      <div className="p-3 text-sm flex gap-2">
         {user.role === 'organizer' && onOpenModal && (
           <button
             className="bg-yellow-600 text-white py-2 px-4 rounded"
@@ -23,7 +23,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onOpenModal }) => {
           </button>
         )}
         <div>
-          <LogoutButton/>
+          <LogoutButton />
         </div>
       </div>
     </nav>
